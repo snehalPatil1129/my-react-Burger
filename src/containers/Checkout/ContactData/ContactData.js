@@ -88,19 +88,16 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: '',
+                value: 'fastest',
                 validation: {},
                 valid: true
             }
         },
-        formIsValid: false,
-       // loading: false
+        formIsValid: false
     }
 
     orderHandler = ( event ) => {
-       // console.log("myyyyyy  Orderrrrr", this.props);
         event.preventDefault();
-       // this.setState( { loading: true } );
         const formData = {};
         for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
@@ -111,14 +108,6 @@ class ContactData extends Component {
             orderData: formData
         }
         this.props.purchaseBurger(order);
-        // axios.post( '/orders.json', order )
-        //     .then( response => {
-        //         this.setState( { loading: false } );
-        //         this.props.history.push( '/' );
-        //     } )
-        //     .catch( error => {
-        //         this.setState( { loading: false } );
-        //     } );
     }
 
     checkValidity(value, rules) {
@@ -208,9 +197,9 @@ class ContactData extends Component {
 }
 const mapStateToProps = state => {
     return {
-        ings :state.ingredients,
-        price :state.totalPrice,
-        loading : state.loading
+        ings :state.burgerBuilder.ingredients,
+        price :state.burgerBuilder.totalPrice,
+        loading : state.orders.loading
     };
 }
 const mapDispatchToProps = dispatch => {
