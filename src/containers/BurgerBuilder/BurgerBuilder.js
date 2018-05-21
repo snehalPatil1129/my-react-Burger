@@ -39,7 +39,12 @@ purchaseContinueHandler = () => {
     }
 
     purchaseHandler = () => {
-        this.setState( { purchasing: true } );
+        if(this.props.isAuthenticated){
+            this.setState( { purchasing: true } );
+        }
+        else{
+            this.props.history.push('/auth');
+        }
     }
 
     purchaseCancelHandler = () => {
@@ -70,7 +75,8 @@ purchaseContinueHandler = () => {
                         disabled={disabledInfo}
                         purchasable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler}
-                        price={this.props.price} />
+                        price={this.props.price}
+                        isAuth={this.props.isAuthenticated} />
                 </Auxillary>
             );
             orderSummary = <OrderSummary
@@ -98,7 +104,8 @@ const mapStateToProps = state => {
         ings :state.burgerBuilder.ingredients,
         price : state.burgerBuilder.totalPrice,
         error : state.burgerBuilder.error,
-        purchased :  state.orders.purchased
+        purchased :  state.orders.purchased,
+        isAuthenticated : state.auth.token !== null
     };
 }
 const mapDispatchToProps = dispatch =>{
