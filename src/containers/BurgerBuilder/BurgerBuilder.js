@@ -9,12 +9,6 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 import *  as burgerBuilderActions from '../../store/actions/index'
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese: 0.4,
-    meat: 1.3,
-    bacon: 0.7
-};
 
 class BurgerBuilder extends Component {
     state = {
@@ -23,9 +17,6 @@ class BurgerBuilder extends Component {
 
     componentDidMount () {
         this.props.onInitIngredients();
-    }
-purchaseContinueHandler = () => {
-        this.props.history.push( '/checkout');
     }
     updatePurchaseState ( ingredients ) {
         const sum = Object.keys( ingredients )
@@ -43,6 +34,7 @@ purchaseContinueHandler = () => {
             this.setState( { purchasing: true } );
         }
         else{
+            this.props.onSetRedirectPath('/checkout');
             this.props.history.push('/auth');
         }
     }
@@ -113,7 +105,8 @@ const mapDispatchToProps = dispatch =>{
         onIngredientAdded : (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
         onIngredientRemoved : (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
         onInitIngredients : () => dispatch(burgerBuilderActions.initIngredients()),
-        onInitPurchase : () => dispatch(burgerBuilderActions.purchaseInit())    
+        onInitPurchase : () => dispatch(burgerBuilderActions.purchaseInit()),
+        onSetRedirectPath : (path) => dispatch(burgerBuilderActions.authRedirectPath(path))    
     };
 }
 export default connect(mapStateToProps , mapDispatchToProps)(withErrorHandler( BurgerBuilder, axios ));
